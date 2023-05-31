@@ -3,24 +3,19 @@ const jwt = require("jsonwebtoken");
 
 const auth = require("../middlewares/auth.middleware");
 const UserModel = require("../models/user.model");
+const sessionSchema = require("../models/session.model");
 
 class AdminController {
   async createTeacher(req, res) {
     const { username, email, password } = req.body;
 
     try {
-      let teacher = await
-        UserModel
-          .findOne()
-          .or([
-            { username },
-            { email },
-          ])
+      let teacher = await UserModel.findOne().or([{ username }, { email }]);
 
       if (teacher) {
         res.status(500).json({
-          msg: "Teacher already exist"
-        })
+          msg: "Teacher already exist",
+        });
         return;
       }
 
@@ -30,31 +25,30 @@ class AdminController {
         username,
         email,
         password: hashPassword,
-        role: "teacher"
+        role: "teacher",
       });
       await teacher.save();
 
       return res.status(200).json(teacher);
-
     } catch (err) {
       console.log(err.message);
       res.status(500).json({
-        msg: "Error when create new teacher account"
-      })
+        msg: "Error when create new teacher account",
+      });
     }
   }
 
   async getTeacher(req, res) {
     try {
       const teachers = await UserModel.find({
-        role: 'teacher'
-      })
+        role: "teacher",
+      });
 
       res.status(200).json(teachers || []);
     } catch (err) {
       console.log(err.message);
       return res.status(500).json({
-        msg: "Error When Get All Teachers"
+        msg: "Error When Get All Teachers",
       });
     }
   }
@@ -64,14 +58,16 @@ class AdminController {
 
     try {
       const teacher = await UserModel.findOne({ username });
-      res.status(200).json(teacher || {
-        msg: "Don't exist teacher with this username"
-      });
+      res.status(200).json(
+        teacher || {
+          msg: "Don't exist teacher with this username",
+        }
+      );
     } catch (err) {
       console.log(err.message);
       return res.status(500).json({
-        msg: "Error when get teacher by username"
-      })
+        msg: "Error when get teacher by username",
+      });
     }
   }
 
@@ -79,19 +75,21 @@ class AdminController {
     const { username } = req.params;
     const newTeacherData = req.body;
 
-    console.log(username)
-
     try {
-      const teacher = await UserModel.findOneAndUpdate({ username }, newTeacherData, {
-        returnOriginal: false
-      })
+      const teacher = await UserModel.findOneAndUpdate(
+        { username },
+        newTeacherData,
+        {
+          returnOriginal: false,
+        }
+      );
 
       res.status(200).json(teacher);
     } catch (err) {
       console.log(err.message);
       return res.status(500).json({
-        msg: "Error when edit teacher"
-      })
+        msg: "Error when edit teacher",
+      });
     }
   }
 
@@ -104,10 +102,47 @@ class AdminController {
     } catch (err) {
       console.log(err.message);
       return res.status(500).json({
-        msg: "Error when delete teacher"
+        msg: "Error when delete teacher",
+      });
+    }
+  }
+
+  async sessionUser(req, res) {
+    const { is_active, email, session_id, start_time } = req.body;
+    console.log(req.body)
+
+    try {
+      let session = await sessionSchema.findOne({session_id})
+      console.log(session);
+
+      await session.save();
+
+
+      return res.status(200).json({
+        a: 'b'
+      });
+
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).json({
+        msg: "Error when create new teacher account",
+      });
+    }
+  }
+
+  async getAllSession(req, res) {
+    try {
+      const session = await sessionSchema.find({
       })
+
+    res.status(200).json({session})
+    } catch (err) {
+      console.log(err.message);
+      return res.status(500).json({
+        msg: "Error When Get All Session",
+      });
     }
   }
 }
 
-module.exports = new AdminController;
+module.exports = new AdminController();

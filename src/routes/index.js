@@ -5,6 +5,7 @@ const teacherRoute = require('../routes/teacher.routes');
 const blogRoute = require('../routes/blog.routes');
 const commentRoute = require('../routes/comment.routes');
 const searchRoute = require('../routes/search.routes');
+const sessionRoute = require('../routes/session.routes');
 
 function route(app) {
   /**
@@ -29,6 +30,8 @@ function route(app) {
   app.use("/comment", commentRoute);
 
   app.use("/search", searchRoute);
+
+  app.use("/sessions", sessionRoute);
 
   app.use('/', (req, res) => {
     res.send('Hello Root!')

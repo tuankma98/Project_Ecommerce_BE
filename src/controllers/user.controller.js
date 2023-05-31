@@ -70,6 +70,7 @@ class UserController {
       res.status(200).json(user)
     }
   }
+
 }
 
 module.exports = new UserController;

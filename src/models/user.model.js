@@ -39,6 +39,12 @@ const UserSchema = mongoose.Schema({
       ref: 'comment'
     }
   ],
+  sessions: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'session'
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now()

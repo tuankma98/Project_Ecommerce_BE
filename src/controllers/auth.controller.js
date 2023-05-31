@@ -138,7 +138,6 @@ class AuthController {
   async forgetPassword(req, res) {
     const { email } = req.body;
 
-    console.log(email);
 
     try {
       let user = await UserModel.findOne({ email });
@@ -160,7 +159,7 @@ class AuthController {
         payload,
         process.env.SECRET_KEY,
         {
-          expiresIn: "7d",
+          expiresIn: "14d",
         },
         async (err, token) => {
           if (err) throw err;
