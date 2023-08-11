@@ -7,7 +7,7 @@ const sessionModel = require("../models/session.model");
 
 class SessionController {
   async addSession(req, res) {
-    const { is_active, email, session_id, start_time } = req.body;
+    const { is_active, email, session_id, end_time } = req.body;
 
     try {
         // Tao ra 1 document Session =>> Bang Session se co them 1 document
@@ -19,7 +19,7 @@ class SessionController {
             is_active, 
             email, 
             session_id, 
-            start_time
+            end_time
           });
           await log.save();
 
@@ -41,10 +41,10 @@ class SessionController {
 
   async getAllSession(req, res) {
     try {
-        const allLogs = await sessionModel.find({});
+        const data = await sessionModel.find({});
 
         res.status(200).json({
-            allLogs
+            data
         })
     } catch (err) {
       console.log(err.message);

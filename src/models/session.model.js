@@ -10,7 +10,7 @@ const sessionSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  start_time: {
+  end_time: {
     type: Date,
     required: true,
     default: Date.now(),

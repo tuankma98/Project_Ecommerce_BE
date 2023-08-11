@@ -25,7 +25,22 @@ class AuthController {
       // Only both unique username and email can signup
       let user = await UserModel.findOne().or([{ username }, { email }]);
 
+
       if (user) {
+        if(user.username === username && user.email === email) {
+          return res.status(400).json({
+          msg: "username and email already in use",
+        })
+        }
+        else if(user.username === username) {
+          return res.status(400).json({
+          msg: "username already in use",
+        })
+        } else if(user.email === email) {
+          return res.status(400).json({
+          msg: "email already in use",
+        })
+        }
         return res.status(400).json({
           msg: "User Already Exists",
         });
